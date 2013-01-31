@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
+use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Bundle\AsseticBundle\AsseticBundle;
 use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -38,17 +39,18 @@ class EzPublishKernel extends Kernel
             new SecurityBundle(),
             new TwigBundle(),
             new MonologBundle(),
+            new SwiftmailerBundle(),
             new AsseticBundle(),
-            new SensioGeneratorBundle(),
             new EzPublishCoreBundle(),
             new EzPublishLegacyBundle(),
             new EzSystemsDemoBundle(),
             new EzPublishRestBundle(),
         );
 
-        if ( $this->getEnvironment() === 'dev' )
+        if ( in_array( $this->getEnvironment(), array( 'dev', 'test' ), true ) )
         {
             $bundles[] = new WebProfilerBundle();
+            $bundles[] = new SensioGeneratorBundle();
             $bundles[] = new EguliasListenersDebugCommandBundle();
         }
 
